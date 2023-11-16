@@ -1,21 +1,15 @@
+
 const express = require('express');
-const proxyController = require('./controllers/ProxyControllers');
+const proxyRoutes = require('./routes/ProxyRoutes');
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 
+// API proxy routes
+app.use('/', proxyRoutes);
 
-// Middleware to parse JSON requests
-app.use(express.json());
-
-// Proxy route
-app.get('/api-proxy', async (req, res) => {
-  await proxyController.proxyRequest(req, res);
-});
-
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

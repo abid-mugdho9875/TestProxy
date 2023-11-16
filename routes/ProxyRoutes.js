@@ -1,6 +1,6 @@
 const express = require('express');
-const rateLimitMiddleware = require('./rateLimitMiddleware');
-const proxyController = require('../controllers/ProxyControllers');
+const rateLimitMiddleware = require('../middlewares/rateLimitMiddleware');
+const ProxyController = require('../controllers/ProxyControllers');
 
 const router = express.Router();
 
@@ -8,13 +8,6 @@ const router = express.Router();
 router.use('/api-proxy', rateLimitMiddleware);
 
 // Proxy all requests to the target API with caching
-router.get('/api-proxy', async (req, res) => {
-  try {
-    await proxyController.proxyRequest(req, res);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+router.all('/api-proxy', ProxyController.proxyRequest);
 
 module.exports = router;
